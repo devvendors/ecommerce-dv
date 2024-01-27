@@ -39,10 +39,7 @@
 }
   </style>
 </head>
-<!--
-written By : sumit kumar
-facebook : fb.com/sumit.luv
--->
+
 
 
 <div class="container">
@@ -54,6 +51,7 @@ facebook : fb.com/sumit.luv
       <thead>
         <tr>
           <th>Name</th>
+          <th>Quantity left</th>
           <th>Image</th>
           <th>Price</th>
           <th>Description</th>
@@ -65,6 +63,7 @@ facebook : fb.com/sumit.luv
 
       <tr>
         <td> {{p.name}}</td>
+        <td> {{p.quantity}}</td>
         <td> <img src="{% static p.product_image.url %}" alt="Profile Pic" height="40px" width="40px" /></td>
         <td>{{p.price}}</td>
         <td>{{p.description}}</td>

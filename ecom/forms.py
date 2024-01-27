@@ -14,12 +14,12 @@ class CustomerUserForm(forms.ModelForm):
 class CustomerForm(forms.ModelForm):
     class Meta:
         model=models.Customer
-        fields=['address','mobile','profile_pic']
+        fields=['address','mobile','profile_pic','email']
 
 class ProductForm(forms.ModelForm):
     class Meta:
         model=models.Product
-        fields=['name','price','description','product_image']
+        fields=['name','price','description','product_image',"quantity"]
 
 #address of shipment
 class AddressForm(forms.Form):

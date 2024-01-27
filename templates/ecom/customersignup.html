@@ -153,6 +153,13 @@ a.socialIcon:hover,
             <div class="card">
                 <form class="box" method="post" enctype="multipart/form-data">
                   {% csrf_token %}
+                    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="text-danger">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
                     <h1>Customer Sign Up</h1>
                     
                       {% render_field userForm.first_name class="form-control" placeholder="First Name" %}
@@ -161,6 +168,7 @@ a.socialIcon:hover,
                             {% render_field userForm.password class="form-control" placeholder="Password" %}
                               {% render_field customerForm.address class="form-control" placeholder="Address" %}
                                 {% render_field customerForm.mobile class="form-control" placeholder="Contact" %}
+                                {% render_field customerForm.email class="form-control" placeholder="email" %}
                                   {% render_field customerForm.profile_pic class="form-control" placeholder="Profile pic" %}
                   
                      <input type="submit" name="" value="Create">
