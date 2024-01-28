@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from . import forms, models
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.core.mail import send_mail
 from django.contrib.auth.models import Group, User
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -49,16 +49,16 @@ def customer_signup_view(request):
             customer.save()
             my_customer_group = Group.objects.get_or_create(name='CUSTOMER')
             my_customer_group[0].user_set.add(user)
-            name=str(request.POST.get('first_name'))+" "+ str(request.POST.get("last_name"))
+            name = str(request.POST.get('first_name')) + " " + str(request.POST.get("last_name"))
             print(name)
-            EMAIL_RECEIVING_USER=request.POST.get('email',None)
+            EMAIL_RECEIVING_USER = request.POST.get('email', None)
             if EMAIL_RECEIVING_USER is None:
                 print("Error!!")
-            message=("Welcome to SreeGuruBhander We're excited to see you here!! check out our Latest offers click "
-                     "here(domain_name.com)\n please Do not reply to this mail!")
-            send_mail("Greetings!"+str(name) , message, settings.EMAIL_HOST_USER, [str(EMAIL_RECEIVING_USER)],
-                     fail_silently=False)
-            message=f"A {name} Just with email adress {EMAIL_RECEIVING_USER} Registered in your website "
+            message = ("Welcome to SreeGuruBhander We're excited to see you here!! check out our Latest offers click "
+                       "here(domain_name.com)\n please Do not reply to this mail!")
+            send_mail("Greetings!" + str(name), message, settings.EMAIL_HOST_USER, [str(EMAIL_RECEIVING_USER)],
+                      fail_silently=False)
+            message = f"A {name} Just with email adress {EMAIL_RECEIVING_USER} Registered in your website "
             send_mail("Greetings! Admin", message, settings.EMAIL_HOST_USER, settings.EMAIL_RECEIVING_USER,
                       fail_silently=False)
         return HttpResponseRedirect('customerlogin')
@@ -252,6 +252,7 @@ def add_to_cart_view(request, pk):
     # for cart counter, fetching products ids added by customer from cookies
     if 'product_ids' in request.COOKIES:
         product_ids = request.COOKIES['product_ids']
+
         counter = product_ids.split('|')
         product_count_in_cart = len(set(counter))
     else:
@@ -263,44 +264,169 @@ def add_to_cart_view(request, pk):
     # adding product id to cookies
     if 'product_ids' in request.COOKIES:
         product_ids = request.COOKIES['product_ids']
+        old_qty = request.COOKIES['quantity']
+        # quantity = request.COOKIES['quantity']
         if product_ids == "":
             product_ids = str(pk)
+            quant_val = 1
+            quantity = f"{product_ids} + {quant_val}"
         else:
             product_ids = product_ids + "|" + str(pk)
+            quant_val = 1
+            quantity = f"{product_ids} + {quant_val}|{old_qty}"
         response.set_cookie('product_ids', product_ids)
+        response.set_cookie("quantity", quantity)
+        # quant_val=1
+        # quantity=f"{product_ids}+{quant_val}| {old_qty}"
     else:
+        quant_val = 1
+        quantity = f"{pk} + {quant_val}"
         response.set_cookie('product_ids', pk)
+        response.set_cookie("quantity", quantity)
 
-    product = models.Product.objects.get(id=pk)
-    #messages.info(request, product.name + ' added to cart successfully!')
+    # product = models.Product.objects.get(id=pk)
+    # messages.info(request, product.name + ' added to cart successfully!')
 
     return response
 
 
 # for checkout of cart
 def cart_view(request):
-    # for cart counter
-    if 'product_ids' in request.COOKIES:
-        product_ids = request.COOKIES['product_ids']
-        counter = product_ids.split('|')
-        product_count_in_cart = len(set(counter))
-    else:
-        product_count_in_cart = 0
-
-    # fetching product details from db whose id is present in cookie
-    products = None
+    quantity_html = []
     total = 0
+    already_added_prods = []
+    products = []
+
     if 'product_ids' in request.COOKIES:
         product_ids = request.COOKIES['product_ids']
+        quantity = request.COOKIES['quantity']
         if product_ids != "":
             product_id_in_cart = product_ids.split('|')
-            products = models.Product.objects.all().filter(id__in=product_id_in_cart)
+            quantity_in_cart = quantity.split('|')
+            if quantity_in_cart[-1] == '':
+                quantity_in_cart.pop()
+            qp = [j.split('+') for j in quantity_in_cart]
 
-            # for total price shown in cart
+            products = models.Product.objects.filter(id__in=product_id_in_cart)
+
             for p in products:
-                total = total + p.price
-    return render(request, 'ecom/cart.html',
-                  {'products': products, 'total': total, 'product_count_in_cart': product_count_in_cart})
+                for i in qp:
+                    if i == '':
+                        continue
+                    if int(i[0]) == p.id and len(i) > 1 and i[0] not in already_added_prods:
+                        total += p.price * int(i[1])
+                        already_added_prods.append(i[0])
+                        quantity_html.append({'id': int(i[0]), 'quantity': int(i[1]), 'price': p.price})
+
+    quantity_html.sort(key=lambda x: x['id'])
+    product_count_in_cart = len(set(already_added_prods))
+
+    if request.method == 'POST':
+        updated_quantity = int(request.POST.get("quantity", 0))
+        pid = int(request.POST.get("pid", 0))
+
+        for prod in quantity_html:
+            if prod['id'] == pid:
+                temp = prod['quantity']
+                prod['quantity'] = updated_quantity
+                prod['price'] = models.Product.objects.get(id=pid).price * updated_quantity
+                total += prod['price'] - (temp * models.Product.objects.get(id=pid).price)
+
+        # Update the quantity in the cookie
+        quantity_cookie = '|'.join([f"{prod['id']}+{prod['quantity']}" for prod in quantity_html])
+        response = redirect('cart')
+        response.set_cookie("quantity", quantity_cookie)
+        return response
+    print("quantity_html=",quantity_html)
+    return render(request, 'ecom/cart.html', {
+        'products': products,
+        'total': total,
+        'product_count_in_cart': product_count_in_cart,
+        'quantity': quantity_html
+    })
+# def cart_view(request):
+#     quantity_html = []
+#     # for cart counter
+#     if 'product_ids' in request.COOKIES:
+#         product_ids = request.COOKIES['product_ids']
+#         counter = product_ids.split('|')
+#         product_count_in_cart = len(set(counter))
+#     else:
+#         product_count_in_cart = 0
+#
+#     # fetching product details from db whose id is present in cookie
+#     products = None
+#     total = 0
+#     already_added_prods = []
+#
+#     if 'product_ids' in request.COOKIES:
+#         product_ids = request.COOKIES['product_ids']
+#         quantity = request.COOKIES['quantity']
+#         if product_ids != "":
+#             product_id_in_cart = product_ids.split('|')
+#             quantity_in_cart = quantity.split('|')
+#             if quantity_in_cart[-1]=='':
+#                 quantity_in_cart.pop()
+#             qp = []
+#             for j in quantity_in_cart:
+#                 j = j.split('+')
+#                 qp.append(j)
+#
+#             # quantity_in_cart.split(" + ")
+#             products = models.Product.objects.all().filter(id__in=product_id_in_cart)
+#
+#             # for total price shown in cart
+#             print(quantity)
+#
+#             for p in products:
+#                 for i in qp:
+#                     print("i[0]=", i[0])
+#                     print("p.id=", p.id)
+#                     print(qp)
+#                     # i_2=True
+#                     # try:
+#                     #     a=i[2]
+#                     #     i_2 = True
+#                     # except IndexError:
+#                     #     i_2=False
+#                     # print(int(i[0])==int(p.id) and len(i)>1)
+#
+#                     if i=='':
+#                         continue
+#                     if int(i[0]) == int(p.id) and len(i) > 1 and i[0] not in already_added_prods:
+#                         print("inside the total")
+#                         total = total + p.price * int(i[1])
+#                         already_added_prods.append(i[0])
+#                         quantity_html.append([int(i[0]), int(i[1])])
+#     quantity_html.sort()
+#     # print(a)
+#     responce = render(request, 'ecom/cart.html',
+#                       {'products': products, 'total': total, 'product_count_in_cart': product_count_in_cart,
+#                        "quantity": quantity_html})
+#     updated_quantity = request.POST.get("quantity", None)
+#     print(updated_quantity)
+#     pid = request.POST.get("pid", None)
+#     if (updated_quantity is not None) or (pid is not None):
+#         print(pid)
+#         for prod in quantity_html:
+#             print(prod)
+#
+#             if prod[0] == pid:
+#                 temp=int(prod[1])
+#                 prod[1] = updated_quantity
+#                 total-=p.price*temp
+#                 total+=p.price*int(prod[1])
+#         str1=''
+#         for prod in range(len(quantity_html)):
+#             str1+=str(quantity_html[prod][0])+"+"+str(quantity_html[prod][1])
+#             str1+="|"
+#         print(total)
+#         responce.set_cookie("quantity", str1)
+#         responce = render(request, 'ecom/cart.html',
+#                           {'products': products, 'total': total, 'product_count_in_cart': product_count_in_cart,
+#                            "quantity": quantity_html})
+#         #cart_view(request)
+#     return responce
 
 
 def remove_from_cart_view(request, pk):
@@ -483,7 +609,7 @@ def my_order_view(request):
 #         product_count_in_cart=len(set(counter))
 #     else:
 #         product_count_in_cart=0
-#     return render(request,'ecom/my_order.html',{'products':products,'product_count_in_cart':product_count_in_cart})    
+#     return render(request,'ecom/my_order.html',{'products':products,'product_count_in_cart':product_count_in_cart})
 
 
 # --------------for discharge patient bill (pdf) download and printing
