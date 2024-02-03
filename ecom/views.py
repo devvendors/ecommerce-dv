@@ -171,7 +171,6 @@ def delete_product_view(request, pk):
 
 @login_required(login_url='adminlogin')
 def update_product_view(request, pk):
-    product = models.Product.objects.get(id=pk)
     productForm = forms.ProductForm(instance=product)
     if request.method == 'POST':
         productForm = forms.ProductForm(request.POST, request.FILES, instance=product)
@@ -179,6 +178,20 @@ def update_product_view(request, pk):
             productForm.save()
             return redirect('admin-products')
     return render(request, 'ecom/admin_update_product.html', {'productForm': productForm})
+def update_product_view(request, pk):
+    product = models.Product.objects.get(id=pk)
+    if request.method == 'POST':
+        productForm = forms.ProductForm(request.POST, request.FILES, instance=product)
+        if productForm.is_valid():
+            productForm.save()
+            return redirect('admin-products')
+        else:
+            print(productForm.errors)  # Add this line to print form errors for debugging
+    else:
+        productForm = forms.ProductForm(instance=product)
+
+    return render(request, 'ecom/admin_update_product.html', {'productForm': productForm})
+
 
 
 @login_required(login_url='adminlogin')
@@ -336,14 +349,17 @@ def cart_view(request):
         quantity_cookie = '|'.join([f"{prod['id']}+{prod['quantity']}" for prod in quantity_html])
         response = redirect('cart')
         response.set_cookie("quantity", quantity_cookie)
+        response.set_cookie("quantity_html",quantity_html)
         return response
     print("quantity_html=",quantity_html)
+
     return render(request, 'ecom/cart.html', {
         'products': products,
         'total': total,
         'product_count_in_cart': product_count_in_cart,
         'quantity': quantity_html
     })
+
 # def cart_view(request):
 #     quantity_html = []
 #     # for cart counter
@@ -555,10 +571,16 @@ def payment_success_view(request):
     mobile = None
     address = None
     if 'product_ids' in request.COOKIES:
+        quantity = request.COOKIES['quantity']
         product_ids = request.COOKIES['product_ids']
         if product_ids != "":
             product_id_in_cart = product_ids.split('|')
+            quantity_in_cart = quantity.split('|')
+            #quantity_in_cart = quantity_in_cart.split('+')
+            print(quantity_in_cart)
+            print(product_id_in_cart)
             products = models.Product.objects.all().filter(id__in=product_id_in_cart)
+            print(products)
             # Here we get products list that will be ordered by one customer at a time
 
     # these things can be change so accessing at the time of order...
@@ -573,8 +595,11 @@ def payment_success_view(request):
     # suppose if we have 5 items in cart and we place order....so 5 rows will be created in orders table
     # there will be lot of redundant data in orders table...but its become more complicated if we normalize it
     for product in products:
-        models.Orders.objects.get_or_create(customer=customer, product=product, status='Pending', email=email,
-                                            mobile=mobile, address=address)
+        for quantity in quantity_in_cart:
+            quantity=quantity.split("+")
+            if product.id == int(quantity[0]):
+                models.Orders.objects.get_or_create(customer=customer, product=product, status='Pending', email=email,
+                                                    mobile=mobile, address=address,quantity=quantity[1])
 
     # after order placed cookies should be deleted
     response = render(request, 'ecom/payment_success.html')
