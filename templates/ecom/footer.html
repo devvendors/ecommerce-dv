@@ -11,51 +11,33 @@
     /*---------------------------------------
    Social section
 -----------------------------------------*/
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
     footer {
       padding: 0px 0px 0px 0px;
-      background-color: black;
+      background-color: whitesmoke;
       margin: 0px;
-  
+      color: black;
+
     }
 
-    .fa {
-      padding: 10px;
-      font-size: 23px;
-      width: 40px;
-      text-align: center;
-      text-decoration: none;
-      margin: 5px 2px;
-      border-radius: 50%;
-    }
 
-    .fa:hover {
-      opacity: 0.5;
-      text-decoration: none;
-    }
 
-    .fa-facebook {
-      background: #3B5998;
-      color: white;
-      margin-top: 30px;
-    }
-
-    .fa-whatsapp {
-      background: #25d366;
-      color: white;
-    }
-
-    .fa-twitter {
-      background: #55ACEE;
-      color: white;
-    }
-
-    .fa-instagram {
-      background: #125688;
-      color: white;
-    }
 
     p {
       text-align: center;
+      margin-bottom: 0px;
 
     }
   </style>
@@ -65,22 +47,29 @@
   <br>
 
   <p>
-    <a href="#" class="fa fa-facebook"></a>
-    <a href="#" class="fa fa-whatsapp"></a>
-    <a href="#" class="fa fa-instagram"></a>
-    <a href="#" class="fa fa-twitter"></a>
+    <a href="#" style="text-decoration: none; color: purple; font-size: 3rem;"><i class="ri-instagram-line"></i></a>
+    <a href="#" style="text-decoration: none; color: blue; font-size: 3rem;"><i class="ri-facebook-circle-fill"></i></a>
+    <a href="#" style="text-decoration: none; color: red; font-size: 3rem;"><i class="ri-youtube-fill"></i></a>
+    <a href="#" style="text-decoration: none; color: skyblue; font-size: 3rem;"><i class="ri-twitter-fill"></i></a>
   </p>
 
-  <br>
   <div class="container">
     <div class="row">
-      <div class="col-md-12 col-sm-12">
+      <div class="col-md-12 col-sm-12 my-4">
         <div style="color:#ffffff;" class="wow fadeInUp footer-copyright">
-          <p>Ecommerce Site in Python using Django Framework<br>
-            &copy; 2022 Developed By Sumit Kumar </p>
+          <p><Span><a href="{%url 'home' %}" style="text-decoration: none; color: black;">Sri<b
+                  style="color: orange;">Guru</b>Bhander</a></Span><br>
+            <span style="color: black; font-size: 1.4rem;"> &reg; 2022 Developed By <a href="www.devvendors.online"
+                target="_blank" style="text-decoration: none; color: orange;">DevVendors</a></span><br>
+            <span style="color: black; font-size: 1.2rem;">help.devvendors@gmail.com</span>
         </div>
+
+        <span style="font-size: 1.4rem; text-align: center;"></span>
+
+        </p>
       </div>
     </div>
+  </div>
   </div>
 </footer>
 <!--

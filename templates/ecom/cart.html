@@ -1,129 +1,108 @@
-
-
-{% extends 'ecom/homebase.html' %}
+{% extends 'ecom/navbar.html' %}
 {% load static %}
-
 {% block content %}
 
 <head>
     <!-- Include Bootstrap CSS and JS -->
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet" />
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
-    <style media="screen">
-        .button {
-            display: inline-block;
-            border-radius: 4px;
-            background-color: #f4511e;
-            border: none;
-            color: #FFFFFF;
-            text-align: center;
-            font-size: 28px;
-            padding: 20px;
-            width: 200px;
-            transition: all 0.5s;
-            cursor: pointer;
-            margin: 5px;
-        }
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-        .button span {
-            cursor: pointer;
-            display: inline-block;
-            position: relative;
-            transition: 0.5s;
-        }
-
-        .button span:after {
-            content: '\00bb';
-            position: absolute;
-            opacity: 0;
-            top: 0;
-            right: -20px;
-            transition: 0.5s;
-        }
-
-        .button:hover span {
-            padding-right: 25px;
-        }
-
-        .button:hover span:after {
-            opacity: 1;
-            right: 0;
-        }
-
-        .button2 {
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            width: 100%;
+            height: 100%;
             background-color: white;
-            color: black;
-            border: 2px solid #008CBA;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
         }
 
-        .button2:hover {
-            background-color: #008CBA;
-            color: white;
+        /*root variable */
+
+        :root {
+            --backgroud: white;
+
+
+        }
+
+        .main-box {
+            width: 100%;
+            height: 100vh;
         }
     </style>
 </head>
 
 <br><br><br><br>
-
-<div class="container">
-    <div class="panel panel-success">
-        <div class="panel-heading">
-            <h6 style="text-align:center;" class="panel-title">My Cart</h6>
-        </div>
-        <table class="table table-hover table-bordered" id="dev-table">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Image</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Description</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            {% for p in products %}
+<div class="main-box">
+    <div class="container">
+        <div class="panel"
+            style=" box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;">
+            <div class="panel-heading" style="background-color: orange;">
+                <h6 style="text-align:center; color: white;  font-family: 'Poppins', sans-serif; font-size: 1.8rem;">My
+                    Cart
+                    <i class="ri-shopping-cart-2-fill"></i>
+                </h6>
+            </div>
+            <table class="table table-hover table-bordered" id="dev-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Image</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                {% for p in products %}
                 {% for q in quantity %}
-                    {% if p and p.id == q.id %}
-                        <tr>
-                            <td>{{ p.name }}</td>
-                            <td>
-                                <img src="{% static p.product_image.url %}" alt="Profile Pic" height="50px"
-                                     width="50px"/>
-                            </td>
-                            <td>₹ {{ p.price }}</td>
-                            <td>
-                                <form method="post" action="{% url 'cart' %}">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="pid" value="{{ p.id }}">
-                                    <input type="number" name="quantity" id="qty" value="{{ q.quantity }}">
-                                    <input type="submit" value="Update">
-                                </form>
-                            </td>
-                            <td>{{ p.description }}</td>
-                            <td>
-                                <a class="btn btn-danger btn-xs" href="{% url 'remove-from-cart' p.id %}">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </a>
-                            </td>
-                        </tr>
-                    {% endif %}
+                {% if p and p.id == q.id %}
+                <tr>
+                    <td>{{ p.name }}</td>
+                    <td>
+                        <img src="{% static p.product_image.url %}" alt="Profile Pic" height="50px" width="50px" />
+                    </td>
+                    <td>₹ {{ p.price }}</td>
+                    <td>
+                        <form method="post" action="{% url 'cart' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="pid" value="{{ p.id }}">
+                            <input type="number" name="quantity" id="qty" value="{{ q.quantity }}"
+                                style="border: none; background-color: rgba(221, 221, 221, 0.632);padding: 2px; text-align: center; border-radius: 5px;">
+                            <input type="submit" value="Update"
+                                style="background-color: transparent;  border-radius: 5px; border: none;  padding: 6px; color: var(--text-color); font-size: 15px; font-weight: bolder;">
+                        </form>
+                    </td>
+                    <td>{{ p.description }}</td>
+                    <td>
+                        <a class="btn btn-danger btn-md" href="{% url 'remove-from-cart' p.id %}">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </td>
+                </tr>
+                {% endif %}
                 {% endfor %}
-            {% endfor %}
-        </table>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <br><br><br>
+    <div style="text-align: center;">
+        <span style="color: maroon; font-size: 2rem; font-weight: bolder;">Total ${{ total }}</span>
+        <br> <br>
+        <a href="/customer-address">
+            <button class="btn btn-success btn-lg"><span>Purchase <i class="ri-shopping-bag-fill"></i></span></button>
+        </a>
     </div>
 </div>
 
-<br><br><br>
-<div style="text-align: center;">
-    <button class="btn btn-danger btn-lg">Total ${{ total }}</button>
-    <a href="/customer-address">
-        <button class="btn btn-success btn-lg"><span>Purchase </span></button>
-    </a>
-</div>
-
-<br><br><br><br><br>
+{% include "ecom/footer.html" %}
 
 {% endblock content %}
-
