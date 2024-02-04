@@ -57,6 +57,7 @@ facebook : fb.com/sumit.luv
           <th>Customer</th>
           <th>Contact</th>
           <th>Shipping Address</th>
+          <th>Quantity</th>
           <th>Product</th>
           <th>Image</th>
           <th>Status</th>
@@ -70,6 +71,7 @@ facebook : fb.com/sumit.luv
         <td> {{c.get_name}}</td>
         <td>{{c.mobile}}</td>
         <td>{{order.address}}</td>
+        <td>{{order.quantity}}</td>
 
         {% endfor %}
         {% for p in product %}

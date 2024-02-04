@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from . import forms, models
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.core.mail import send_mail
@@ -171,13 +171,18 @@ def delete_product_view(request, pk):
 
 @login_required(login_url='adminlogin')
 def update_product_view(request, pk):
+    product = models.Product.objects.get(id=pk)
     productForm = forms.ProductForm(instance=product)
     if request.method == 'POST':
         productForm = forms.ProductForm(request.POST, request.FILES, instance=product)
         if productForm.is_valid():
             productForm.save()
             return redirect('admin-products')
+        else:
+            print("save not performed!!")
     return render(request, 'ecom/admin_update_product.html', {'productForm': productForm})
+
+
 def update_product_view(request, pk):
     product = models.Product.objects.get(id=pk)
     if request.method == 'POST':
@@ -191,7 +196,6 @@ def update_product_view(request, pk):
         productForm = forms.ProductForm(instance=product)
 
     return render(request, 'ecom/admin_update_product.html', {'productForm': productForm})
-
 
 
 @login_required(login_url='adminlogin')
@@ -349,9 +353,9 @@ def cart_view(request):
         quantity_cookie = '|'.join([f"{prod['id']}+{prod['quantity']}" for prod in quantity_html])
         response = redirect('cart')
         response.set_cookie("quantity", quantity_cookie)
-        response.set_cookie("quantity_html",quantity_html)
+        response.set_cookie("quantity_html", quantity_html)
         return response
-    print("quantity_html=",quantity_html)
+    print("quantity_html=", quantity_html)
 
     return render(request, 'ecom/cart.html', {
         'products': products,
@@ -359,91 +363,6 @@ def cart_view(request):
         'product_count_in_cart': product_count_in_cart,
         'quantity': quantity_html
     })
-
-# def cart_view(request):
-#     quantity_html = []
-#     # for cart counter
-#     if 'product_ids' in request.COOKIES:
-#         product_ids = request.COOKIES['product_ids']
-#         counter = product_ids.split('|')
-#         product_count_in_cart = len(set(counter))
-#     else:
-#         product_count_in_cart = 0
-#
-#     # fetching product details from db whose id is present in cookie
-#     products = None
-#     total = 0
-#     already_added_prods = []
-#
-#     if 'product_ids' in request.COOKIES:
-#         product_ids = request.COOKIES['product_ids']
-#         quantity = request.COOKIES['quantity']
-#         if product_ids != "":
-#             product_id_in_cart = product_ids.split('|')
-#             quantity_in_cart = quantity.split('|')
-#             if quantity_in_cart[-1]=='':
-#                 quantity_in_cart.pop()
-#             qp = []
-#             for j in quantity_in_cart:
-#                 j = j.split('+')
-#                 qp.append(j)
-#
-#             # quantity_in_cart.split(" + ")
-#             products = models.Product.objects.all().filter(id__in=product_id_in_cart)
-#
-#             # for total price shown in cart
-#             print(quantity)
-#
-#             for p in products:
-#                 for i in qp:
-#                     print("i[0]=", i[0])
-#                     print("p.id=", p.id)
-#                     print(qp)
-#                     # i_2=True
-#                     # try:
-#                     #     a=i[2]
-#                     #     i_2 = True
-#                     # except IndexError:
-#                     #     i_2=False
-#                     # print(int(i[0])==int(p.id) and len(i)>1)
-#
-#                     if i=='':
-#                         continue
-#                     if int(i[0]) == int(p.id) and len(i) > 1 and i[0] not in already_added_prods:
-#                         print("inside the total")
-#                         total = total + p.price * int(i[1])
-#                         already_added_prods.append(i[0])
-#                         quantity_html.append([int(i[0]), int(i[1])])
-#     quantity_html.sort()
-#     # print(a)
-#     responce = render(request, 'ecom/cart.html',
-#                       {'products': products, 'total': total, 'product_count_in_cart': product_count_in_cart,
-#                        "quantity": quantity_html})
-#     updated_quantity = request.POST.get("quantity", None)
-#     print(updated_quantity)
-#     pid = request.POST.get("pid", None)
-#     if (updated_quantity is not None) or (pid is not None):
-#         print(pid)
-#         for prod in quantity_html:
-#             print(prod)
-#
-#             if prod[0] == pid:
-#                 temp=int(prod[1])
-#                 prod[1] = updated_quantity
-#                 total-=p.price*temp
-#                 total+=p.price*int(prod[1])
-#         str1=''
-#         for prod in range(len(quantity_html)):
-#             str1+=str(quantity_html[prod][0])+"+"+str(quantity_html[prod][1])
-#             str1+="|"
-#         print(total)
-#         responce.set_cookie("quantity", str1)
-#         responce = render(request, 'ecom/cart.html',
-#                           {'products': products, 'total': total, 'product_count_in_cart': product_count_in_cart,
-#                            "quantity": quantity_html})
-#         #cart_view(request)
-#     return responce
-
 
 def remove_from_cart_view(request, pk):
     # for counter in cart
@@ -479,6 +398,7 @@ def remove_from_cart_view(request, pk):
             response.delete_cookie('product_ids')
         response.set_cookie('product_ids', value)
         return response
+    
 
 
 def send_feedback_view(request):
@@ -576,11 +496,12 @@ def payment_success_view(request):
         if product_ids != "":
             product_id_in_cart = product_ids.split('|')
             quantity_in_cart = quantity.split('|')
-            #quantity_in_cart = quantity_in_cart.split('+')
+            # quantity_in_cart = quantity_in_cart.split('+')
             print(quantity_in_cart)
             print(product_id_in_cart)
             products = models.Product.objects.all().filter(id__in=product_id_in_cart)
             print(products)
+
             # Here we get products list that will be ordered by one customer at a time
 
     # these things can be change so accessing at the time of order...
@@ -590,16 +511,37 @@ def payment_success_view(request):
         mobile = request.COOKIES['mobile']
     if 'address' in request.COOKIES:
         address = request.COOKIES['address']
-
+    checker = 0
+    p_n = ''
     # here we are placing number of orders as much there is a products
     # suppose if we have 5 items in cart and we place order....so 5 rows will be created in orders table
     # there will be lot of redundant data in orders table...but its become more complicated if we normalize it
     for product in products:
         for quantity in quantity_in_cart:
-            quantity=quantity.split("+")
+            quantity = quantity.split("+")
+
             if product.id == int(quantity[0]):
                 models.Orders.objects.get_or_create(customer=customer, product=product, status='Pending', email=email,
-                                                    mobile=mobile, address=address,quantity=quantity[1])
+                                                    mobile=mobile, address=address, quantity=int(quantity[1]))
+                if (product.quantity - int(quantity[1])) >= 0:
+                    product.quantity = product.quantity - int(quantity[1])
+                    product.save()
+                    p_n += f"{product.name} "
+                    if product.quantity<2:
+                        send_mail(f"product {product.name} is out of Stalk!!",
+                                  f"Dear Admin,\n your product named {product.name} has alarmingly Low Quantity!! Please refill it! \nProduct name: {product.name}\n Product id: {product.id}\n Product Description: {product.description}\nPrice: {product.price}",settings.EMAIL_HOST_USER,settings.EMAIL_RECEIVING_USER,fail_silently=False)
+
+
+                else:
+                    send_mail(f"{product.name} is Currently out of stalk",
+                              f"Sorry but your Shipment of the product {product.name} might get delayed due to lack of stalk\n we are trying Our best to bring the product to stalk at earliest!! \n The rest of the products will reach you in Time! For any doubts/quearies please contact {settings.EMAIL_HOST_USER} or the Mobile Number +91 8240891935",settings.EMAIL_HOST_USER, [email,], fail_silently=False)
+                    checker+=1
+                    send_mail(f"product {product.name} is out of Stalk!!",f"Dear Admin,\n your product named {product.name} is out of stalk \nProduct name: {product.name}\n Product id: {product.id}\n Product Description: {product.description}\nPrice: {product.price}",settings.EMAIL_HOST_USER,settings.EMAIL_RECEIVING_USER,fail_silently=False)
+    if checker == 0:
+        send_mail(f"Order Placed!!",
+                  f"Your order for {p_n} is successfully Placed!\n Thankyou for shopping With Us! \n click here -> domainname.com to get more offers!!",
+                  settings.EMAIL_HOST_USER,[email,], fail_silently=False)
+        checker += 1
 
     # after order placed cookies should be deleted
     response = render(request, 'ecom/payment_success.html')
