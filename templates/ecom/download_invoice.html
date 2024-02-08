@@ -122,7 +122,7 @@
           <table class="table table-bordered table-striped">
             <tr>
               <td class="title">
-                <h5>Ecommerce Site - Django</h5>
+                <h5>SreeGuruBhander</h5>
               </td>
 
               <td>
@@ -163,15 +163,21 @@
           <table>
             <tr>
               <td>
-                Product Image :<br>
-                 <img src="{% static product_image.url %}" alt="Profile Pic" height="40px" width="40px" /><br><br>
+                Product Quantity :<br>
+                 {{quantity}}<br><br>
                 Product Price : <br>
-                ${{productPrice}}
+                ${{total}}<br>
+
               </td>
               <td>
                 Product: <br> {{productName}}<br><br>
                 Description: <br> {{productDescription}}
               </td>
+              <td>
+                transaction Id: <br> {{transactionId}}<br><br>
+
+              </td>
+
 
             </tr>
           </table>
@@ -194,7 +200,7 @@
       </tr>
 
 
-      
+
 
 
     </table>

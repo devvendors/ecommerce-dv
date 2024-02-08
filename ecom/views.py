@@ -392,7 +392,7 @@ def remove_from_cart_view(request, pk):
                 value = value + product_id_in_cart[0]
             else:
                 value = value + "|" + product_id_in_cart[i]
-        response = render(request, 'ecom/cart.html',
+        response = render(request, 'ecom/removed_from_cart.html',
                           {'products': products, 'total': total, 'product_count_in_cart': product_count_in_cart})
         if value == "":
             response.delete_cookie('product_ids')
@@ -460,16 +460,24 @@ def customer_address_view(request):
             total = 0
             if 'product_ids' in request.COOKIES:
                 product_ids = request.COOKIES['product_ids']
+                quantity=request.COOKIES['quantity']
                 if product_ids != "":
                     product_id_in_cart = product_ids.split('|')
+                    quantity_id_in_cart = quantity.split('|')
+                    print(quantity_id_in_cart)
                     products = models.Product.objects.all().filter(id__in=product_id_in_cart)
                     for p in products:
-                        total = total + p.price
+                        for q in quantity_id_in_cart:
+                            q=q.split("+")
+                            if int(q[0]) == int(p.id):
+                                total = total + p.price*int(q[1])
 
-            response = render(request, 'ecom/payment.html', {'total': total})
+            response = redirect("/pay_now")#render(request, 'ecom/payment.html', {'total': total})
             response.set_cookie('email', email)
             response.set_cookie('mobile', mobile)
             response.set_cookie('address', address)
+            response.set_cookie("amount", total)
+
             return response
     return render(request, 'ecom/customer_address.html',
                   {'addressForm': addressForm, 'product_in_cart': product_in_cart,
@@ -516,13 +524,22 @@ def payment_success_view(request):
     # here we are placing number of orders as much there is a products
     # suppose if we have 5 items in cart and we place order....so 5 rows will be created in orders table
     # there will be lot of redundant data in orders table...but its become more complicated if we normalize it
+    razorpay_signature=request.GET.get('razorpay_signature',None)
+    razorpay_order_id=request.GET.get('razorpay_order_id',None)
+    razorpay_payment_id=request.GET.get('razorpay_payment_id',None)
+    print("*********************")
+    print("razorpay_signature",razorpay_signature)
+    print("razorpay_order_id",razorpay_order_id)
+    print("razorpay_payment_id",razorpay_payment_id)
+    print("*********************")
+
     for product in products:
         for quantity in quantity_in_cart:
             quantity = quantity.split("+")
 
             if product.id == int(quantity[0]):
                 models.Orders.objects.get_or_create(customer=customer, product=product, status='Pending', email=email,
-                                                    mobile=mobile, address=address, quantity=int(quantity[1]))
+                                                    mobile=mobile, address=address, quantity=int(quantity[1]),razorpay_payment_id=razorpay_payment_id,razorpay_order_id=razorpay_order_id,razorpay_signature=razorpay_signature)
                 if (product.quantity - int(quantity[1])) >= 0:
                     product.quantity = product.quantity - int(quantity[1])
                     product.save()
@@ -609,11 +626,15 @@ def download_invoice_view(request, orderID, productID):
         'customerMobile': order.mobile,
         'shipmentAddress': order.address,
         'orderStatus': order.status,
+        "transactionId":order.razorpay_payment_id,
+        "quantity": order.quantity,
+        "total":product.price*int(order.quantity),
 
         'productName': product.name,
         'productImage': product.product_image,
         'productPrice': product.price,
         'productDescription': product.description,
+
 
     }
     return render_to_pdf('ecom/download_invoice.html', mydict)

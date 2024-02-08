@@ -42,10 +42,7 @@
     }
   </style>
 </head>
-<!--
-written By : sumit kumar
-facebook : fb.com/sumit.luv
--->
+
 <div class="container" style="margin-top: 2%;">
   <div style="color: white; background-color: #e2e8f0;">
     <div style="background-color: var(--nav-color); padding: 20px;">
@@ -55,7 +52,6 @@ facebook : fb.com/sumit.luv
       <thead>
         <tr>
           <th>Name</th>
-          <th>Picture</th>
           <th>Contact</th>
           <th>Address</th>
           <th>Actions</th>
@@ -64,7 +60,6 @@ facebook : fb.com/sumit.luv
       {% for c in customers %}
       <tr>
         <td> {{c.get_name}}</td>
-        <td> <img src="{% static c.profile_pic.url %}" alt="Profile Pic" height="40px" width="40px" /></td>
         <td>{{c.mobile}}</td>
         <td>{{c.address}}</td>
         <td><a class="btn btn-primary btn-xs" href="{% url 'update-customer' c.id  %}"><span

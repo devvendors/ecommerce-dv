@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "ecom",
     "widget_tweaks",
+    "payment_gateway",
 ]
 
 MIDDLEWARE = [
