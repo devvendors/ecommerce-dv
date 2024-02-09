@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_pic = models.ImageField(
-        upload_to="profile_pic/CustomerProfilePic/", null=True, blank=True
+        upload_to="profile_pic/CustomerProfilePic/", null=True, blank=True,default='profile_pic/CustomerProfilePic/default_pic.jpg'
     )
     address = models.CharField(max_length=40)
     mobile = models.CharField(max_length=20, null=False)
@@ -50,6 +50,9 @@ class Orders(models.Model):
     order_date = models.DateField(auto_now_add=True, null=True)
     status = models.CharField(max_length=50, null=True, choices=STATUS)
     quantity = models.IntegerField(default=1)
+    razorpay_payment_id = models.CharField(max_length=100, null=True,blank=True)
+    razorpay_order_id = models.CharField(max_length=100, null=True,blank=True)
+    razorpay_signature = models.CharField(max_length=100, null=True,blank=True)
 
 
 class Feedback(models.Model):
