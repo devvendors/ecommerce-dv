@@ -36,6 +36,12 @@
     padding:10px;
     height:10vh;
   }
+  input[type="submit"]{
+    padding:10px;
+      border:none;
+      border-radius:5px;
+      background-color:orange;
+  }
   
 
   /*Mobile Responsive*/
@@ -43,20 +49,25 @@
 
     .form{
       width:80vw;
-      font-size:3rem;
       margin-top: 15%;
     }
     input[type="number"],input[type="email"]{
       width:100%;
       border:2px solid black;
-      font-size:2.5rem;
-      height:3vh;
+      font-size:1rem;
+      height:5vh;
+      padding:20px;
     }
     input[type="text"]{
       width:100%;
-      padding:10px;
+      padding:20px;
       border:2px solid black;
-      font-size:2.5rem;
+      font-size:1rem;
+    }
+    input[type="submit"]{
+      padding:20px;
+      font-size:1rem;
+    
     }
 
   }
@@ -67,18 +78,18 @@
   {% csrf_token %}
   <ul class="form-style-1">
     <li>
-      <label style="font-size:2.1rem;">Email <span style="color:red;">*</span></label>
+      <label style="font-size:1.1rem;">Email <span style="color:red;">*</span></label>
       <br>
       {% render_field addressForm.Email class="field-long" placeholder="Email"%}
     </li>
     <li>
-      <label style="font-size:2.1rem;">Mobile <span style="color:red;">*</span></label>
+      <label style="font-size:1.1rem;">Mobile <span style="color:red;">*</span></label>
       <br>
       {% render_field addressForm.Mobile class="field-long" placeholder="Mobile"%}
     </li>
 
     <li>
-      <label style="font-size:2.1rem;">Shipment Address <span style="color:red;">*</span></label>
+      <label style="font-size:1.1rem;">Shipment Address <span style="color:red;">*</span></label>
       <br>
 
       <span>
@@ -88,11 +99,7 @@
     <li>
     <br>
 
-      <input type="submit" style="padding:10px;
-      border:none;
-      border-radius:5px;
-      background-color:orange;
-      font-weight:bolder;
+      <input type="submit" style="
       " value="Proceed To Pay" />
     </li>
   </ul>
