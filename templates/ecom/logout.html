@@ -5,6 +5,10 @@
 <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet" />
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+    * ::-webkit-scrollbar {
+        overflow-x: hidden;
+    
+      }
 
     body {
         margin: 0;
@@ -49,10 +53,33 @@
         cursor: pointer;
         background-color: brown;
     }
+
+    /* Mobile Responsiveness */
+    @media only screen and (max-width: 1000px) {
+
+        body {
+            font-size: 2rem;
+        }
+
+        .box {
+            width: 100%;
+            margin-top: 50%;
+        }
+
+        .box button {
+            width: 30%;
+            padding: 20px;
+
+        }
+
+        .box button a {
+            font-size: 5rem;
+        }
+
+    }
 </style>
 <center>
     <div class="box">
-        <span></span>
         <h2 style="color: green;">You've successfully Logged out! <i class="ri-checkbox-circle-fill"></i></h2>
         <button><a href="{%url 'home' %}"><i class="ri-arrow-right-circle-line"></i> <i
                     class="ri-home-7-fill"></i></a></button>

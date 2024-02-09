@@ -7,6 +7,10 @@
     <title>Simple E-commerce</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+        * ::-webkit-scrollbar {
+            overflow-x: hidden;
+        
+          }
 
         body {
             margin: 0;
@@ -37,7 +41,7 @@
         input[type="text"],
         input[type="password"] {
             width: 80%;
-            margin-left: 30px;
+            margin: auto;
             margin-bottom: 10px;
             border-radius: 50px;
             background-color: rgba(255, 255, 255, 0.625);
@@ -48,8 +52,9 @@
         .box h1 {
 
             color: var(--maincolor);
-            font-size: 2.4rem;
+            font-size: 1.5rem;
             text-align: center;
+            margin: 20px;
 
             /* text-transform: uppercase; */
 
@@ -61,7 +66,8 @@
             border: 0;
             background: none;
             display: block;
-            margin: 20px auto;
+            margin: auto;
+            margin-bottom: 10px;
             text-align: center;
             border: 2px solid orange;
             padding: 10px 50px 10px 50px;
@@ -83,8 +89,61 @@
             height: 100vh;
         }
 
-
         /*From -end*/
+
+        /* Mobile Respomsive */
+        @media only screen and (max-width: 1000px) {
+
+            .box {
+                width: 90vw;
+                padding: 10px;
+                margin: auto;
+                margin-top: 100px;
+                border-radius: 15px;
+                box-shadow: none;
+                border: 5px solid whitesmoke;
+
+            }
+
+            .box h1 {
+                font-size: 2.5rem;
+                margin: 50px;
+            }
+
+            input[type="text"],
+            input[type="password"] {
+                width: 80%;
+                padding: 20px;
+                font-size: 1.2rem;
+                border: 2px solid black;
+                margin: auto;
+                margin-bottom: 30px;
+
+
+            }
+
+            .box input[type="submit"] {
+
+                padding: 30px;
+                width: 60%;
+                font-size: 1.2rem;
+                background-color: orange;
+                color: white;
+                font-weight: bolder;
+                margin: auto;
+                margin-bottom: 40px;
+                border-radius: 50px;
+            }
+
+            .box input[type="submit"]:hover {
+                background-color: white;
+                border: 5px solid orange;
+                color: orange;
+            }
+
+
+
+        }
     </style>
 </head>
 

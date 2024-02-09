@@ -4,9 +4,15 @@
 {% block content %}
 <style media="screen">
     @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+    * ::-webkit-scrollbar {
+        overflow-x: hidden;
+    
+      }
 
     body {
         background-color: #f7f7f7;
+        width: 100vw;
+        height: 100%;
         /* font-family: 'Open Sans', serif */
     }
 
@@ -162,10 +168,44 @@
         width: 100%;
         height: 100vh;
     }
+
+    .box {
+        margin: 20px;
+
+    }
+
+    .caption {
+        width: 20%;
+    }
+
+
+    /*Mobile Responsive*/
+    @media only screen and (max-width:1000px) {
+        *{
+            font-size:1.5rem;
+          }
+        .box {
+            font-size: 1rem;
+        }
+
+        .aside img {
+            width: 220px;
+            height: 220px;
+        }
+
+        .btn a {
+            font-size: 1.5rem;
+            padding: 20px;
+        }
+      
+
+
+
+    }
 </style>
 <br>
 <div class="main-box">
-    <div class="container">
+    <div class="box">
         <header class="card-header" style="text-align:center; font-size: 21px"> My Orders / Tracking </header>
 
         {% for products,order in data %}
@@ -178,39 +218,52 @@
                     <li class="col-md-4">
                         <figure class="itemside mb-3">
                             {%for product in products%}
-                            <div class="aside"><img src="{% static product.product_image.url %}" class="img-sm border">
+                            <div class="aside"><img src="{% static product.product_image.url %}" class="img-md border"
+                                    width="200px" height="200px">
                             </div>
-                            <figcaption class="info align-self-center">
 
-                                <p class="title"><strong>Name : </strong>{{product.name}} <br> <strong>Description :
-                                    </strong>{{product.description}} <br> <strong>Price : </strong>${{product.price}}
-                                </p>
+                            <!-- <div><strong>Name : </strong>{{product.name}} <br> <strong class="description">Description
+                                    :
+                                </strong>
+                                <p>{{product.description}} </p><br> <strong>Price :
+                                </strong>${{product.price}}
+                            </div> -->
 
-                            </figcaption>
+                    </li>
+                    <li class="col-md-4">
+                        <p><strong>Product Name</strong> <br>
+                            {{product.name}}</p>
+                        <p><strong>Price</strong> <br>
+                            ₹{{product.price}}</p>
+                        <br>
+                        <p> <strong>Status</strong><br>
 
-                        </figure>
+                            {% if order.status == 'Pending'%}
+                            <td> <span class="label btn-warning px-2 py-1"
+                                    style="font-size: 12px;">{{order.status}}</span>
+                            </td>
+                            {% elif order.status == 'Delivered' %}
+                            <td> <span class="label btn-success" style="font-size: 12px;">{{order.status}}</span></td>
+                            {% elif order.status == 'Out for Delivery' %}
+                            <td> <span class="label btn-default" style="font-size: 12px;">{{order.status}}</span></td>
+                            {%else%}
+                            <td> <span class="label btn-primary" style="font-size: 12px;">{{order.status}}</span></td>
+                            {%endif%}
+
+
+                        </p>
+
+
+
                     </li>
                     <li class="col-md-4">
                         <div class="col"> <strong>Shipment Address</strong> <br> {{order.address}}</div>
                     </li>
                     <li class="col-md-4">
-                        <div class="col"> <strong>Status</strong><br>
-
-                            {% if order.status == 'Pending'%}
-                            <td> <span class="label label-warning" style="font-size: 12px;">{{order.status}}</span></td>
-                            {% elif order.status == 'Delivered' %}
-                            <td> <span class="label label-success" style="font-size: 12px;">{{order.status}}</span></td>
-                            {% elif order.status == 'Out for Delivery' %}
-                            <td> <span class="label label-default" style="font-size: 12px;">{{order.status}}</span></td>
-                            {%else%}
-                            <td> <span class="label label-primary" style="font-size: 12px;">{{order.status}}</span></td>
-                            {%endif%}
-
-
-                        </div> <br>
+                        <br>
                         <h4><a style="text-decoration:none;"
                                 href="{% url 'download-invoice' order.id product.id  %}"><button
-                                    class="btn btn-danger btn-sm">Download Invoice <i
+                                    class="btn btn-danger btn-sm ">Download Invoice <i
                                         class="ri-download-2-line"></i></button></a></h4>
                     </li>
                     {%endfor%}

@@ -88,7 +88,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "mydb",
         "USER": "root",
-        "PASSWORD": "root",
+        "PASSWORD": "",
         "HOST": "localhost",  # put your host
         "PORT": "3306",  # put your port
     }
@@ -153,5 +153,5 @@ EMAIL_HOST_PASSWORD = "livx ccso tvtu cxtc"  # host email password required
 EMAIL_RECEIVING_USER = [
     "ar12agnik@gmail.com"
 ]  # email on which you will receive messages sent from website
-Mobile = '+91 8240891935'
+Mobile = "+91 8240891935"
 hst = "http://127.0.0.1:8000/"

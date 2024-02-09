@@ -12,6 +12,10 @@
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+    * ::-webkit-scrollbar {
+      overflow-x: hidden;
+  
+    }
 
     body {
       margin: 0;
@@ -66,60 +70,18 @@
 
     }
 
-    /*---------------------------------------
-           Social section
-        -----------------------------------------*/
-    footer {
-      padding: 0px 0px 0px 0px;
-      background-color: black;
-      margin: 0px;
-    }
+    /*Mobile responsive*/
+    @media only screen and (max-width:1000px) {
+      .nav {
+        padding: 30px;
+        font-size: 2.8rem;
+      }
 
+      .nav .nav-left a {
+        font-size: 6rem;
+        margin: 20px;
 
-    #ftr {
-
-      padding: 20px;
-    }
-
-    .fa {
-
-      font-size: 23px;
-      width: 60px;
-      text-align: center;
-      text-decoration: none;
-      margin: 5px 2px;
-      border-radius: 50%;
-    }
-
-    .fa:hover {
-      opacity: 0.5;
-      text-decoration: none;
-    }
-
-    .fa-facebook {
-      background: #3B5998;
-      color: white;
-      margin-top: 30px;
-    }
-
-    .fa-whatsapp {
-      background: #25d366;
-      color: white;
-    }
-
-    .fa-twitter {
-      background: #55ACEE;
-      color: white;
-    }
-
-    .fa-instagram {
-      background: #125688;
-      color: white;
-    }
-
-    p {
-      text-align: center;
-
+      }
     }
   </style>
 </head>
@@ -156,7 +118,7 @@
 
   {% endblock content %}
   <!-- content end-->
-  <br><br><br><br><br><br><br><br>
+ 
   <!-- <footer>
     <p>
       <a id="ftr" href="#" class="fa fa-facebook"></a>
