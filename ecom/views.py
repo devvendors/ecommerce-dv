@@ -427,7 +427,8 @@ def customer_home_view(request):
     return render(request, 'ecom/customer_home.html',
                   {'products': products, 'product_count_in_cart': product_count_in_cart})
 
-
+def orders_return(request):
+    return render(request,"ecom/orders_return.html")
 # shipment address before placing order
 @login_required(login_url='customerlogin')
 def customer_address_view(request):

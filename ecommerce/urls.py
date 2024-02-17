@@ -56,6 +56,7 @@ urlpatterns = [
     path('customer-address', views.customer_address_view,name='customer-address'),
     path("pay_now",views_pg.paynow,name="Paynow"),
     path('payment-success/', views.payment_success_view,name='payment-success'),
+    path('orders_return/', views.orders_return,name='orders_return'),
 
 
 ]
