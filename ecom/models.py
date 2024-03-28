@@ -68,3 +68,8 @@ class Cart(models.Model):
     prod_details = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity_ordered = models.IntegerField(default=1)
     customer_details = models.ForeignKey(Customer, on_delete=models.CASCADE)
+class returnorder(models.Model):
+    Pname=models.CharField(max_length=200)
+    Cphone=models.CharField(max_length=20)
+    dop=models.DateField()
+    user_name=models.CharField(max_length=100)

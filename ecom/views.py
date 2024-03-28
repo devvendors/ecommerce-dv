@@ -428,6 +428,18 @@ def customer_home_view(request):
                   {'products': products, 'product_count_in_cart': product_count_in_cart})
 
 def orders_return(request):
+    if request.method=='POST':
+        Pname=request.POST.get('pname',None)
+        Cphone=request.POST.get('cphone',None)
+        dop=request.POST.get('dop',None)
+        caddress=request.POST.get('caddress',None)
+        user_name=request.user.first_name+' '+request.user.last_name
+        if Pname  or Cphone or dop or caddress or user_name is not None:
+            return_order=models.returnorder(Pname=Pname,user_name=user_name,caddress=caddress,Cphone=Cphone,dop=dop)
+            return_order.save()
+            message=f"{user_name} wants to return the order {Pname} the mentioned address {caddress}"
+            send_mail("return order request!!",message,settings.EMAIL_HOST_USER,settings.EMAIL_HOST_USER)
+            return redirect(reverse('home'))
     return render(request,"ecom/orders_return.html")
 # shipment address before placing order
 @login_required(login_url='customerlogin')
