@@ -8,12 +8,6 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-  * ::-webkit-scrollbar {
-    overflow-x: hidden;
-
-  }
-
-
   body {
     margin: 0;
     padding: 0;
@@ -197,6 +191,7 @@
     .btn a {
       font-size: 1rem;
     }
+    .ooo{font-size:2rem;}
 
 
 
@@ -212,15 +207,14 @@
   <link rel="preload" as="image" href="https://source.unsplash.com/640x360?2" />
 
   <div class="content-hero">
-    <h1><i class="ri-account-circle-fill"></i> {{request.user}}</h1>
-    <p>Welcome {{request.user}} now your are one of the customer of our shop. <br>Explore new products and don't forget
+    <h5 class="ooo">Welcome {{request.user}} now your are one of the customer of our shop. <br>Explore new products and don't forget
       to
-      give us feedback : )</p>
+      give us feedback : )</h5>
   </div>
 </section>
 <!-- Hero-slider-end  -->
 
-<section style="background-color: #eee;">
+<section style="background-color: whitesmoke;">
   {% for p in products %}
 
   <!-- card -->
@@ -260,7 +254,7 @@
   <div class="main-product-box py-2">
     <div class="row justify-content-center">
       <div class="col-md-12 col-xl-10">
-        <div class="card shadow-0 border rounded-3">
+        <div class="card shadow-0 border rounded-0" style="box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;">
           <div class="card-body">
             <div class="row">
               <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
@@ -284,7 +278,7 @@
                     <i class="ri-star-s-fill "></i>
                   </div>
 
-                  <h5>₹ {{p.price}}</h5>
+                  <h6>₹ {{p.price}}</h6>
                 </div>
                 <div class="mt-1 mb-0 text-muted small">
 
@@ -292,7 +286,7 @@
                 <div class="mb-2 text-muted small">
 
                 </div>
-                <span style="font-size:11px">
+                <span style="font-size:14px">
                   {{p.description}}
                 </span>
               </div>
@@ -312,7 +306,7 @@
                   </div>
 
 
-                  <button type="button" class="btn btn-success btn-md btn-green"> <a
+                  <button type="button" class="btn btn-success rounded-0 btn-md btn-green"> <a
                       href="{% url 'add-to-cart' p.id  %}" style="text-decoration: none; color: white;">Add to cart <i
                         class="ri-shopping-cart-2-fill"></i></a></button>
 

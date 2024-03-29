@@ -6,10 +6,6 @@
   <title></title>
 
   <style>
-    * ::-webkit-scrollbar {
-      overflow-x: hidden;
-  
-    }
     /*Cards*/
     :root {
       --background: #94a3b8;
@@ -17,139 +13,19 @@
 
     }
 
-    .cards a {
-      text-decoration: none;
-      color: white;
-      height: 10vh;
-
-    }
-
-    .cards a:hover {
-      text-decoration: none;
-      color: white;
-      cursor: pointer;
-    }
-
-    .cards {
-      display: flex;
-      justify-content: center;
-      width: 100%;
-      margin: auto;
-      margin-bottom: 100px;
-     
-
-    }
-
-    .cards .card-margin-1 {
-      margin: 20px;
-    }
-
-    .cards .card-1 {
-      background-color: green;
-      margin-right: 100px;
-      padding: 20px;
-      width: 100%;
-      border-radius: 100px;
-      text-align: center;
-      padding-left: 50px;
-      padding-right: 50px;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-
-
-    }
-
-    .cards .card-1:hover {
-      cursor: pointer;
-      background-color: rgba(0, 128, 0, 0.773);
-    }
-
-    .cards .card-margin-2 {
-      margin: 20px;
-    }
-
-    .cards .card-2 {
-      background-color: red;
-      margin-right: 100px;
-      padding: 20px;
-      padding-left: 80px;
-      padding-right: 80px;
-      width: 100%;
-      border-radius: 100px;
-      text-align: center;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-
-
-    }
-
-    .cards .card-2:hover {
-      cursor: pointer;
-      background-color: rgba(255, 0, 0, 0.814);
-    }
-
-    .cards .card-margin-3 {
-      margin: 20px;
-    }
-
-    .cards .card-3 {
-      background-color: gray;
-      margin-right: 100px;
-      padding: 20px;
-      padding-left: 80px;
-      padding-right: 80px;
-      width: 100%;
-      border-radius: 100px;
-      text-align: center;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-
-
-    }
-
-    .cards .card-3:hover {
-      cursor: pointer;
-      background-color: rgba(128, 128, 128, 0.779);
-    }
-
 
     /*Mobile Responsive*/
     @media only screen and (max-width:1000px) {
-     
-     
-      .cards {
-        display: flex;
-        flex-wrap: wrap;
-        height: 20vh;
-      }
-
-      .cards .card-1 {
-        border-radius: 200%;
-
-       
-      }
-
-      .cards .card-2 {
-        border-radius: 200%;
-      }
-
-      .cards .card-3 {
-        border-radius: 200%;
-      }
-
-      .body {
-        background-color: var(--nav-color);
-      }
-
-      .cards .card-margin-1 {
-        margin: 5px;
-      }
-
-      .cards .card-margin-2 {
-        margin: 5px;
-      }
-
-      .cards .card-margin-3 {
-        margin: 5px;
-      }
+      .container{ 
+        font-size: 3.7rem;
+        width: 100%; 
     }
+    .container h3{
+      font-size: 5rem;
+
+    }
+    .d{display: flex; flex-wrap:wrap ;}
+  }
   </style>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -157,36 +33,50 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body class="body">
-  <div class="cards">
-    <a href="/view-customer">
-      <div class="card-margin-1">
-        <div class="card-1">
-          <h2>{{customercount}}</h2>
-          <h3>Registered Customer</h3>
-          <h1><i class="ri-team-fill"></i></h1>
-        </div>
-      </div>
-    </a>
-    <a href="/admin-products">
-      <div class="card-margin-2">
-        <div class="card-2">
-          <h2>{{productcount}}</h2>
-          <h3>Total Products</h3>
-          <h1><i class="ri-shopping-cart-fill"></i></h1>
-        </div>
-      </div>
-    </a>
-    <a href="/admin-view-booking">
-      <div class="card-margin-3">
-        <div class="card-3">
-          <h2>{{ordercount}}</h2>
-          <h3>Total Orders</h3>
-          <h1><i class="ri-bar-chart-grouped-fill"></i></h1>
-        </div>
-      </div>
-    </a>
+<body>
+
+<div class="container d-flex mt-5 d">
+<!-- one-card-start  -->
+<div class="small-box bg-success px-3 py-3 mx-5 text-light  container">
+  <div class="inner">
+    <h3>{{customercount}}</h3>       
+      <p>Registered Customer</p>
   </div>
+  <div class="icon">
+      <i class="ion ion-stats-bars"></i>
+  </div>
+  <a href="/view-customer" class="small-box-footer text-white">More info <i class="fa fa-arrow-circle-right"></i></a>
+</div>
+<!-- one-card-end -->
+
+<!-- two-card-start  -->
+<div class="small-box bg-danger px-3 py-3 mx-5 text-light container">  
+<div class="inner">
+      <h3>{{productcount}}</h3>       
+        <p>Total Products</p>
+    </div>
+    <div class="icon">
+        <i class="ion ion-stats-bars"></i>
+    </div>
+  <a href="/admin-products" class="small-box-footer text-white">More info <i class="fa fa-arrow-circle-right"></i></a>
+</div>
+<!-- two-card-end  -->
+
+<!-- three-card-start  -->
+<div class="small-box bg-secondary px-3 py-3 mx-5 text-light container">
+<div class="inner">
+        <h3>{{ordercount}}</h3>       
+          <p>Total Orders</p>
+      </div>
+      <div class="icon">
+          <i class="ion ion-stats-bars"></i>
+      </div>
+      <a href="/admin-view-booking" class="small-box-footer text-white">More info <i class="fa fa-arrow-circle-right"></i></a>
+</div>
+<!-- threee-card-end  -->
+</div>
+
+
 
 
 

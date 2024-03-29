@@ -8,10 +8,7 @@
 <style>
 
   @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-  * ::-webkit-scrollbar {
-    overflow-x: hidden;
 
-  }
 
   body {
     margin: 0;
@@ -100,13 +97,13 @@
         <td> <img src="{% static p.product_image.url %}" alt="Profile Pic" height="40px" width="40px" /></td>
 
         {% if order.status == 'Pending'%}
-        <td> <span class="label label-warning">{{order.status}}</span></td>
+        <td> <span>{{order.status}}</span></td>
         {% elif order.status == 'Delivered' %}
-        <td> <span class="label label-success">{{order.status}}</span></td>
+        <td> <span>{{order.status}}</span></td>
         {% elif order.status == 'Out for Delivery' %}
-        <td> <span class="label label-primary">{{order.status}}</span></td>
+        <td> <span>{{order.status}}</span></td>
         {%else%}
-        <td> <span class="label label-primary"
+        <td> <span
             style="background-color: yellow; color: var(--background);">{{order.status}}</span></td>
         {%endif%}
         {% endfor %}

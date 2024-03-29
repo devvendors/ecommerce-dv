@@ -12,11 +12,6 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-        * ::-webkit-scrollbar {
-            overflow-x: hidden;
-        
-          }
-
         body {
             margin: 0;
             padding: 0;
@@ -45,8 +40,8 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{%url 'home' %}" style="font-size: 1.5rem;">Sri<b
-                    style="color: orange;">Guru</b>Vhandar</a>
+            <a class="navbar-brand" href="{%url 'home' %}" style="font-size: 1.3rem;"><b>Sri<b
+                    style="color: orange;">Guru</b>Vhandar</b></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -86,7 +81,7 @@
                                 class="ri-shopping-cart-line"></i>{{ product_count_in_cart }}</a>
                     </li>
                 </ul>
-                <form class="d-flex" role="search" action="/search" get="get">
+                <form class="d-flex my-1 mb-0" role="search" action="/search" get="get">
                     <input class="form-control rounded-0 me-0" type="search" placeholder="Search Products"
                         aria-label="Search" name="query" id="query">
                     <button class="btn btn-warning rounded-0" type="submit"><i class="ri-search-line"></i></button>
