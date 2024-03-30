@@ -11,6 +11,8 @@ from django.urls import path
 from ecom import views
 from payment_gateway import  views as views_pg
 from django.contrib.auth.views import LoginView,LogoutView
+# from django.conf.urls.static import static
+# from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.home_view,name='home'),
@@ -60,3 +62,4 @@ urlpatterns = [
 
 
 ]
+# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

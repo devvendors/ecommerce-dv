@@ -1,15 +1,19 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from . import forms, models
+from .models import Product
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.core.mail import send_mail
 from django.contrib.auth.models import Group, User
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.conf import settings
+import random
 
 
-def home_view(request):
+def home_view(request,):
     products = models.Product.objects.all()
+    products = list(products)
+    random.shuffle(products)
     if 'product_ids' in request.COOKIES:
         product_ids = request.COOKIES['product_ids']
         counter = product_ids.split('|')
@@ -241,10 +245,27 @@ def view_feedback_view(request):
 # ---------------------------------------------------------------------------------
 # ------------------------ PUBLIC CUSTOMER RELATED VIEWS START ---------------------
 # ---------------------------------------------------------------------------------
+# def_load=5
+# def load_more(request):
+#
+#     def_load=settings.DEFAULT_NO_OF_PRODS
+#     def_load+=5
+#     print(def_load)
+#     if request.user.is_authenticated:
+#         return customer_home_view(request,def_load)
+#     else:
+#         return home_view(request,def_load)
+
+
+
 def search_view(request):
     # whatever user write in search box we get in query
-    query = request.GET['query']
-    products = models.Product.objects.all().filter(name__icontains=query)
+    query = request.GET.get('query','')
+    print(type(query))
+    products = Product.objects.all()
+    if query:
+        products = products.filter(name__icontains=query)
+    print(products)
     if 'product_ids' in request.COOKIES:
         product_ids = request.COOKIES['product_ids']
         counter = product_ids.split('|')
@@ -418,6 +439,8 @@ def send_feedback_view(request):
 @user_passes_test(is_customer)
 def customer_home_view(request):
     products = models.Product.objects.all()
+    products = list(products)
+    random.shuffle(products)
     if 'product_ids' in request.COOKIES:
         product_ids = request.COOKIES['product_ids']
         counter = product_ids.split('|')
@@ -564,7 +587,7 @@ def payment_success_view(request):
 
                 else:
                     send_mail(f"{product.name} is Currently out of stalk",
-                              f"Sorry but your Shipment of the product {product.name} might get delayed due to lack of stalk\n we are trying Our best to bring the product to stalk at earliest!! \n The rest of the products will reach you in Time! For any doubts/quearies please contact {settings.EMAIL_HOST_USER} or the Mobile Number +91 8240891935",settings.EMAIL_HOST_USER, [email,], fail_silently=False)
+                              f"Sorry but your Shipment of the product {product.name} might get delayed due to lack of stalk\n we are trying Our best to bring the product to stalk at earliest!! \n The rest of the products will reach you in Time! For any doubts/quearies please contact {settings.EMAIL_HOST_USER} or the Mobile Number {settings.MOBILE}",settings.EMAIL_HOST_USER, [email,], fail_silently=False)
                     checker+=1
                     send_mail(f"product {product.name} is out of Stalk!!",f"Dear Admin,\n your product named {product.name} is out of stalk \nProduct name: {product.name}\n Product id: {product.id}\n Product Description: {product.description}\nPrice: {product.price}",settings.EMAIL_HOST_USER,settings.EMAIL_RECEIVING_USER,fail_silently=False)
     if checker == 0:

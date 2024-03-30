@@ -21,6 +21,7 @@ class ProductForm(forms.ModelForm):
         model=models.Product
         fields=['name','price','description','product_image',"quantity"]
 
+
 #address of shipment
 class AddressForm(forms.Form):
     Email = forms.EmailField()

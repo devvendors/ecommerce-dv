@@ -154,5 +154,6 @@ EMAIL_HOST_PASSWORD = "livx ccso tvtu cxtc"  # host email password required
 EMAIL_RECEIVING_USER = [
     "ar12agnik@gmail.com"
 ]  # email on which you will receive messages sent from website
-Mobile = "+91 8240891935"
-hst = "http://127.0.0.1:8000/"
+MOBILE = "+91 8240891935"
+HST = "http://127.0.0.1:8000/"
+# DEFAULT_NO_OF_PRODS=5
