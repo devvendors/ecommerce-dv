@@ -2,14 +2,17 @@
 {% load static %}
 {% block content %}
 <br>
-{%include 'ecom/admin_dashboard_cards.html'%}
+{% include 'ecom/admin_dashboard_cards.html' %}
 <br><br><br><br><br>
 
 <style>
+  /* Color Variables */
+  :root {
+    --background: white;
+    --nav-color: #334155;
+  }
 
-  @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-
-
+  /* General Styles */
   body {
     margin: 0;
     padding: 0;
@@ -17,61 +20,65 @@
     width: 100%;
     height: 100%;
     background-color: var(--background);
-    background-color:var(--nav-color);
-
   }
 
-  /*Color Variable*/
-
-  :root {
-    --background: #94a3b8;
-    --nav-color: #334155;
-
+  .main-box {
+    margin: 20px;
   }
-
- 
 
   .panel-heading {
     background-color: var(--nav-color);
     color: white;
     text-align: center;
     padding: 20px;
-
   }
 
   .panel-heading h6 {
     font-size: 2rem;
+    margin-bottom: 20px;
   }
 
-  /*Mobile Responsive*/
-  @media only screen and (max-width:1000px) {
-    .main-box {
-      margin: 0px;
-    }
+  /* Table Styles */
+  .table {
+    font-size: 1.3rem;
+  }
 
+  .table th,
+  .table td {
+    white-space: nowrap;
+  }
+
+  .table th {
+    background-color: var(--nav-color);
+    color: white;
+  }
+
+  /* Responsive Styles */
+  @media only screen and (max-width: 1000px) {
+    
     .panel-heading h6 {
       font-size: 3rem;
     }
 
     .table {
-      font-size: 2.2rem;
-
+      font-size: 1.5rem;
     }
 
     img {
-      width: 100px;
-      height: 100px;
+      max-width: 80px;
+      max-height: 80px;
     }
   }
 </style>
+
 <hr>
 <div class="main-box">
-  <div style="color: white; background-color: #e2e8f0;">
-    <div class="panel-heading">
-      <h6 class="panel-title">RECENT BOOKING</h6>
-    </div>
-    <table class="table table-hover table-bordered" id="dev-table">
-      <thead>
+  <div class="panel-heading">
+    <h6>RECENT BOOKINGS</h6>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered">
+      <thead class="thead-dark">
         <tr>
           <th>Customer</th>
           <th>Contact</th>
@@ -80,42 +87,32 @@
           <th>Product</th>
           <th>Image</th>
           <th>Status</th>
-
         </tr>
       </thead>
-      {% for product,customer,order in data %}
+      {% for product, customer, order in data %}
       <tr>
         {% for c in customer %}
-        <td> {{c.get_name}}</td>
-        <td>{{c.mobile}}</td>
-        <td>{{order.address}}</td>
-        <td>{{order.quantity}}</td>
-
+        <td>{{ c.get_name }}</td>
+        <td>{{ c.mobile }}</td>
+        <td>{{ order.address }}</td>
+        <td>{{ order.quantity }}</td>
         {% endfor %}
         {% for p in product %}
-        <td> {{p.name}}</td>
-        <td> <img src="{% static p.product_image.url %}" alt="Profile Pic" height="40px" width="40px" /></td>
-
-        {% if order.status == 'Pending'%}
-        <td> <span>{{order.status}}</span></td>
+        <td>{{ p.name }}</td>
+        <td><img src="{% static p.product_image.url %}" alt="Product Image" style="max-height: 50px;"></td>
+        {% if order.status == 'Pending' %}
+        <td><span class="badge bg-warning">{{ order.status }}</span></td>
         {% elif order.status == 'Delivered' %}
-        <td> <span>{{order.status}}</span></td>
+        <td><span class="badge bg-success">{{ order.status }}</span></td>
         {% elif order.status == 'Out for Delivery' %}
-        <td> <span>{{order.status}}</span></td>
-        {%else%}
-        <td> <span
-            style="background-color: yellow; color: var(--background);">{{order.status}}</span></td>
-        {%endif%}
+        <td><span class="badge bg-info">{{ order.status }}</span></td>
+        {% else %}
+        <td><span class="badge bg-secondary">{{ order.status }}</span></td>
+        {% endif %}
         {% endfor %}
       </tr>
       {% endfor %}
-
-
-
-
-
     </table>
-
   </div>
 </div>
 

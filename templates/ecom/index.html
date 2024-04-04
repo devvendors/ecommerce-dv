@@ -86,6 +86,9 @@
     height: 20vh;
     width: 100%;
   }
+  .para{
+      font-size: 13px;
+    }
 
   /*Hero-slider-end*/
 
@@ -174,14 +177,17 @@
 
     .btn-green {
       width: 30vw;
-      margin-left: 20%;
+      margin-left: 15%;
     }
 
     .btn a {
-      font-size: 1.1rem;
+      font-size: 1.5rem;
     }
     .textsm{
       font-size:2rem;
+    }
+    .para{
+      font-size: 1rem;
     }
     .ooo{font-size:2rem;}
 
@@ -205,53 +211,18 @@
 </section>
 <!-- Hero-slider-end  -->
 
-<section style="background-color: whitesmoke;" class="section">
+<section class="section">
   {% for p in products %}
-
-  <!-- card -->
-  <!-- <div class="card">
-    <div class="image">
-      <img src="{% static p.product_image.url %}" alt="">
-    </div>
-    <div class="caption">
-      <p class="rate">
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-      </p>
-      <p class="product_name">
-
-        {{p.name}}
-
-      </p>
-      <p class="price" style="color: var(--text-color);"><b>
-          ₹ {{p.price}}
-
-        </b><br>
-
-      </p>
-      <p><b>{{p.description}}</b></p>
-
-
-    </div>
-
-    <button class="add"> <a href="{% url 'add-to-cart' p.id  %}">Add to cart <i
-          class="ri-shopping-cart-2-fill"></i></a></button>
-  </div>
- -->
-
   <div class="main-product-box py-2">
     <div class="row justify-content-center">
       <div class="col-md-12 col-xl-10">
-        <div class="card shadow-0 border rounded-0" style="box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;">
+        <div class="card shadow-0 border" style="border-radius: 30px;    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;">
           <div class="card-body">
             <div class="row">
               <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
-                <div class="bg-image hover-zoom ripple rounded ripple-surface">
+                <div class="bg-image hover-zoom ripple ripple-surface">
                   <img src="{% static p.product_image.url %}"
-                    style="width: 100%; height:100%; overflow: hidden; object-fit: cover;" />
+                    style="width: 100%; height:100%; overflow: hidden; object-fit: cover; border-radius: 20px;" />
                   <a href="#!">
                     <div class="hover-overlay">
                       <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
@@ -277,7 +248,7 @@
                 <div class="mb-2 text-muted small">
 
                 </div>
-                <span style="font-size:14px;">
+                <span class="para">
                   {{p.description}}
                 </span>
               </div>
@@ -296,7 +267,7 @@
                   </div>
 
 
-                  <button type="button" class="btn btn-success rounded-0 btn-md btn-green"> <a
+                  <button type="button" class="btn btn-success btn-md btn-green" style="border-radius: 100px;"> <a
                       href="{% url 'add-to-cart' p.id  %}" style="text-decoration: none; color: white;">Add to cart <i
                         class="ri-shopping-cart-2-fill"></i></a></button>
 

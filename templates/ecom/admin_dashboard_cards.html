@@ -6,26 +6,47 @@
   <title></title>
 
   <style>
-    /*Cards*/
+    /* Cards */
     :root {
       --background: #94a3b8;
       --nav-color: #334155;
-
     }
 
-
-    /*Mobile Responsive*/
-    @media only screen and (max-width:1000px) {
-      .container{ 
-        font-size: 3.7rem;
-        width: 100%; 
+    /* General Styles */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--background);
     }
-    .container h3{
-      font-size: 5rem;
 
+    /* Mobile Responsive */
+    @media only screen and (max-width: 1000px) {
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .container .small-box {
+        width: 80%;
+        margin: 20px;
+      }
+
+      .container h3 {
+        font-size: 5rem;
+      }
+      .text{
+        font-size: 3rem;
+        padding: 10px;
+      }
+      .icon{
+        font-size: 5rem;
+      }
+      .text-more{
+        font-size: 3rem;
+      }
     }
-    .d{display: flex; flex-wrap:wrap ;}
-  }
   </style>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -34,53 +55,48 @@
 </head>
 
 <body>
-
-<div class="container d-flex mt-5 d">
-<!-- one-card-start  -->
-<div class="small-box bg-success px-3 py-3 mx-5 text-light  container">
-  <div class="inner">
-    <h3>{{customercount}}</h3>       
-      <p>Registered Customer</p>
-  </div>
-  <div class="icon">
-      <i class="ion ion-stats-bars"></i>
-  </div>
-  <a href="/view-customer" class="small-box-footer text-white">More info <i class="fa fa-arrow-circle-right"></i></a>
-</div>
-<!-- one-card-end -->
-
-<!-- two-card-start  -->
-<div class="small-box bg-danger px-3 py-3 mx-5 text-light container">  
-<div class="inner">
-      <h3>{{productcount}}</h3>       
-        <p>Total Products</p>
-    </div>
-    <div class="icon">
-        <i class="ion ion-stats-bars"></i>
-    </div>
-  <a href="/admin-products" class="small-box-footer text-white">More info <i class="fa fa-arrow-circle-right"></i></a>
-</div>
-<!-- two-card-end  -->
-
-<!-- three-card-start  -->
-<div class="small-box bg-secondary px-3 py-3 mx-5 text-light container">
-<div class="inner">
-        <h3>{{ordercount}}</h3>       
-          <p>Total Orders</p>
+<center>
+  <div class="container mt-5">
+    <!-- One Card -->
+    <div class="small-box bg-success text-light w-50 rounded" style="box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;"">
+      <div class="inner">
+        <h3>{{ customercount }}</h3>
+        <p class="text">Registered Customers</p>
       </div>
       <div class="icon">
-          <i class="ion ion-stats-bars"></i>
+        <i class="fa fa-users"></i>
       </div>
-      <a href="/admin-view-booking" class="small-box-footer text-white">More info <i class="fa fa-arrow-circle-right"></i></a>
-</div>
-<!-- threee-card-end  -->
-</div>
+      <a href="/view-customer" class="small-box-footer text-white text-more">More info <i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+    <!-- End One Card -->
 
+    <!-- Two Card -->
+    <div class="small-box bg-danger text-light w-50 rounded" style="box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;"">
+      <div class="inner">
+        <h3>{{ productcount }}</h3>
+        <p class="text">Total Products</p>
+      </div>
+      <div class="icon">
+        <i class="fa fa-cube"></i>
+      </div>
+      <a href="/admin-products" class="small-box-footer text-white text-more">More info <i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+    <!-- End Two Card -->
 
-
-
-
+    <!-- Three Card -->
+    <div class="small-box bg-secondary text-light w-50 rounded" style="box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;"">
+      <div class="inner">
+        <h3>{{ ordercount }}</h3>
+        <p class="text">Total Orders</p>
+      </div>
+      <div class="icon">
+        <i class="fa fa-shopping-cart"></i>
+      </div>
+      <a href="/admin-view-booking" class="small-box-footer text-white text-more">More info <i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+    <!-- End Three Card -->
+  </div>
+</center>
 </body>
-
 
 </html>
